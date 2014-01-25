@@ -1,0 +1,8 @@
+created by Xiaogang Han 2014-01-24
+
+TODO
+	usability
+        https://github.com/bradrobertson/sublime-packages/blob/master/Default/mark.py
+    features
+        https://github.com/vaisaghvt/CheckTypos
+        tex/english stackexchange

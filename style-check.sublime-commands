@@ -1,0 +1,6 @@
+[
+	{
+		"caption": "Style Check",
+		"command": "style_check"
+	}
+]
