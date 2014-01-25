@@ -1,4 +1,5 @@
 # Check English writing style
+
 import os
 import sublime, sublime_plugin, urllib.request, urllib.parse, re
 from .checker import get_rules, match
@@ -22,6 +23,5 @@ class StyleCheckCommand(sublime_plugin.TextCommand):
         for problem in problems:
             print(problem)
 
-        fix = '%s -> [%s]' % (text, text)
-        return fix
+        return ''
 

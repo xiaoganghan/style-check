@@ -19,7 +19,6 @@ def get_rules():
                     expression, reason = line.split('%')
                     expression = expression.rstrip()
                     reason = reason.strip()
-                    # expression, reason = map(str.strip, line.split('%'))
                     if reason:
                         check_type = reason.split()[0]
                         if check_type == 'syntax':
@@ -42,18 +41,23 @@ def get_rules():
 
 def match(censored_phrases, text):
     problems = []
+    characters = 128
     for ind, line in enumerate(text.split('\n')):
-        for k, v in censored_phrases.items():
-            m = k.search(line)
+        for regex, reason in censored_phrases.items():
+            m = regex.search(line)
             if m:
-                problems.append((m.group(), ind+1, m.span(), k.pattern, v))
-    problems = sorted(problems, key=lambda x: x[1])
+                extra = int((characters - (m.end() - m.start())) / 2)
+                context = line[m.start() - extra: m.end() + extra]
+                problems.append((ind+1, m.span(), context, regex.pattern, reason))
+    problems = sorted(problems, key=lambda x: x[0])
+    problems = ['L%d[%d:%d]:\t%s\t(%s)' % (p[0], p[1][0], p[1][1], p[2], p[4]) for p in problems]
     return problems
 
 
 if __name__ == '__main__':
     text = """
     hello the the book is very good in order to utilize
-    hello the the book is very good in order to utilize
     """
-    print(match(get_rules(), text))
+    problems = match(get_rules(), text)
+    for problem in problems:
+        print(problem)
